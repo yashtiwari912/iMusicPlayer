@@ -88,7 +88,7 @@ public class PlaySong extends AppCompatActivity {
                     while(currentPosition<mediaPlayer.getDuration()){
                         currentPosition = mediaPlayer.getCurrentPosition();
                         seekBar.setProgress(currentPosition);
-                        Thread.sleep(355);
+                        Thread.sleep(800);
                         currentimer.setText(createTimerLabel(currentPosition));
                     }
                 }
