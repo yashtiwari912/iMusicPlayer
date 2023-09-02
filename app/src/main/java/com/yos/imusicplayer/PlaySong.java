@@ -80,23 +80,27 @@ public class PlaySong extends AppCompatActivity {
             }
         });
         updateseek = new Thread(){
-            @SuppressWarnings("BusyWait")
             @Override
             public void run() {
-                int currentPosition =0;
-                try{
-                    while(currentPosition<mediaPlayer.getDuration()){
-                        currentPosition = mediaPlayer.getCurrentPosition();
-                        seekBar.setProgress(currentPosition);
-                        Thread.sleep(800);
-                        currentimer.setText(createTimerLabel(currentPosition));
+                int totalduration = mediaPlayer.getDuration();
+                int currentposition = 0 ;
+                while(currentposition<totalduration){
+                    try {
+                        sleep(500);
+                        currentposition = mediaPlayer.getCurrentPosition();
+                        seekBar.setProgress(currentposition);
+                        currentimer.setText(createTimerLabel(currentposition));
                     }
+                    catch (InterruptedException | IllegalStateException e){
+                        e.printStackTrace();
+                    }
+
                 }
-                catch (Exception e){
-                e.printStackTrace();
-                }
+
             }
         };
+
+        seekBar.setMax(mediaPlayer.getDuration());
         updateseek.start();
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +113,12 @@ public class PlaySong extends AppCompatActivity {
                     play.setImageResource(R.drawable.pause);
                     mediaPlayer.start();
                 }
+            }
+        });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                next.performClick();
             }
         });
         previous.setOnClickListener(new View.OnClickListener() {
